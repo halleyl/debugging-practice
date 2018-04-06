@@ -22,9 +22,11 @@ button {
 }
 
 h3 {
-  padding-top: 1;
+  /* Added rem to padding-top (was only a number alone) */
+  padding-top: 1rem;
   margin-top: 3rem;
-  border-top: solid 1px maron;
+  /* Corrected typo in "maroon" */
+  border-top: solid 1px maroon;
 }
 
 button, input[type="submit"] {

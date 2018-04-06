@@ -18,6 +18,7 @@
 // Global variable to hold list of courses.
 var courseList = [];
 // REVIEW: Would this be safer if variable was scoped to window.onload or addACourse functions?
+// I think it would be better if it was tied to a function - but then can we use it throughout the page, or just in that function?
 
 // Assign handlers to page events.
 window.onload = function(){
@@ -28,13 +29,17 @@ window.onload = function(){
   document.querySelector("button#calculate").addEventListener("click", calculateAverage)
   // REVIEW: Would it make more sense to make some handlers anonymous functions,
   // instead of defining them elsewhere and assigning them here?
+  // Could we make the buttons call the functions instead of using this method?
 }
 
 // Triggered on form submit. Creates a new course object and pushes it into courseList array,
 // clears content in form fields, prints courseList objects to the page.
 // BUGFIX: This function isn't working properly- nothing gets output to the list on form submit
 function addACourse(){
+  // Added line to prevent form from submitting?
+  event.preventDefault()
   var grade = parseFloat(this.elements["grade"].value);
+  console.log("grade: ", grade)
   /*
     TODO: validate that "grade" value is a number between 1.0 and 4.0, stop processing if it is not.
 
@@ -43,6 +48,9 @@ function addACourse(){
 
     REVIEW: could we make it doubly safe by adding an HTML validation as well?
   */
+  // Here's my attempt below:
+  if(grade >= 0 && grade <= 4) {
+    
 
   // Create the new course with values from the form, push it into array of courses.
   var newCourse = {
@@ -51,10 +59,18 @@ function addACourse(){
   }
 
   courseList.push(newCourse)
-
+  console.log("courseList: ", courseList)
+    
   clearFormFields()
   outputList()
+    
+  } else {
+    alert("Please enter a number grade between 0 and 4.")
+  }
+  
 }
+
+
 
 // Calculate the average of "grade" attribute for all objects in courseList array
 // and print it in friendly message to page text.
@@ -76,7 +92,9 @@ function clearGPA(){
 
 // Clears content in form fields.
 function clearFormFields(){
-  // TODO: implement this function.
+  // Done!
+  document.course.name.value = ""
+  document.course.grade.value = ""
 }
 
 // Clear out list of courses and all content shown on the page
@@ -89,9 +107,22 @@ function clearData(){
 // Prints courseList objects to the page in a readable way.
 function outputList(){
   var list = document.getElementById("course-list");
+  console.log("list: ", list)
+  list.innerHTML = ""
+  
+  for(var i = 0; i < courseList.length; i++) {
+    console.log("name: ", courseList[i].name, ", grade: ", courseList[i].grade)
+    
+    // This block here is awesome and good to remember
+    // Created a variable for a new li and inserted it into the ul. Woo!
+    var newLi = document.createElement("li")
+    newLi.innerHTML = "name: " + courseList[i].name + ", grade: " + courseList[i].grade
+    list.appendChild(newLi)
+  }
   /*
-    TODO: Clear the existing contents of the "list" element. Then, for each object in courseList,
+    TODO: Then, for each object in courseList,
     create an li element that holds the course's name and grade, and append
     it to the "list" ul element.
   */
+  
 }
